@@ -8,7 +8,7 @@ CREATE TABLE "Survey" (
     "cep" TEXT,
     "frequency" TEXT,
     "wineStyle" TEXT[] DEFAULT ARRAY[]::TEXT[],
-    "wineType" TEXT,
+    "wineType" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "classification" TEXT,
     "priceRange" TEXT,
     "alcoholFreeWine" TEXT,
