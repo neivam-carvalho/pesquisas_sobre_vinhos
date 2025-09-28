@@ -300,13 +300,36 @@ export const MultiSectionQuestion = ({
             </h3>
             
             {section.type === 'text' && (
-              <input
-                type="text"
-                value={values[section.id] as string || ''}
-                onChange={(e) => onChange(section.id, e.target.value)}
-                placeholder={section.placeholder}
-                className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none text-base"
-              />
+              <>
+                <input
+                  type="text"
+                  value={values[section.id] as string || ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    // Se for o campo CEP, aplicar validação especial
+                    if (section.id === 'cep') {
+                      // Permite apenas números e limita a 8 dígitos
+                      const numericValue = value.replace(/\D/g, '').slice(0, 8);
+                      onChange(section.id, numericValue);
+                    } else {
+                      onChange(section.id, value);
+                    }
+                  }}
+                  placeholder={section.placeholder}
+                  className={`w-full p-3 border-2 rounded-lg focus:outline-none text-base transition-all ${
+                    section.id === 'cep' && values[section.id] && (values[section.id] as string).length !== 8
+                      ? 'border-red-500 focus:border-red-600 bg-red-50'
+                      : 'border-gray-300 focus:border-purple-500'
+                  }`}
+                  maxLength={section.id === 'cep' ? 8 : undefined}
+                />
+                {section.id === 'cep' && values[section.id] && (values[section.id] as string).length > 0 && (values[section.id] as string).length !== 8 && (
+                  <p className="text-red-600 text-sm mt-1 flex items-center">
+                    <span className="mr-1">⚠️</span>
+                    CEP deve ter exatamente 8 dígitos numéricos
+                  </p>
+                )}
+              </>
             )}
             
             {section.type === 'single' && section.options && (

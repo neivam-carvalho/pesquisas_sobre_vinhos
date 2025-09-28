@@ -83,6 +83,12 @@ export default function SurveyPage() {
       if (section.type === 'text') {
         if (!value || value.toString().trim().length === 0) {
           missing.push(section.title)
+        } else if (section.id === 'cep') {
+          // Validação específica para CEP: deve ter exatamente 8 dígitos numéricos
+          const cepValue = value.toString().replace(/\D/g, '')
+          if (cepValue.length !== 8) {
+            missing.push(section.title + ' (deve ter 8 dígitos)')
+          }
         }
       } else if (section.type === 'single') {
         if (!value || value.toString().trim().length === 0) {
