@@ -1,26 +1,8 @@
 {
-  "name": "pesquisas-sobre-vinhos",
-  "version": 2,
-  "builds": [
-    {
-      "src": "src/app/**",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/src/app/$1"
-    }
-  ],
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
   "env": {
-    "DATABASE_URL": "@database_url",
-    "NEXTAUTH_SECRET": "@nextauth_secret",
-    "NEXTAUTH_URL": "@nextauth_url"
-  },
-  "functions": {
-    "src/app/api/**/*.ts": {
-      "runtime": "nodejs18.x"
-    }
+    "DATABASE_URL": "@database_url"
   }
 }
