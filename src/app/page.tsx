@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Wine, CheckCircle, ExternalLink } from 'lucide-react'
 import { 
@@ -60,6 +60,11 @@ export default function SurveyPage() {
   }
 
   const [missingFields, setMissingFields] = useState<string[]>([])
+
+  // Scroll to top whenever the step changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [currentStep])
 
   const validateCurrentStep = (step: number): { isValid: boolean; missing: string[] } => {
     if (step === 0 || step === TOTAL_STEPS - 1) return { isValid: true, missing: [] }
@@ -161,7 +166,7 @@ export default function SurveyPage() {
       >
         <Wine size={80} className="mx-auto text-purple-600 mb-6" />
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
-          Pesquisa Rápida de Vinhos & Espumantes 🍷✨
+          Pesquisa Rápida sobre Vinhos & Espumantes
         </h1>
         <p className="text-xl text-gray-600 leading-relaxed">
           Queremos conhecer um pouco mais sobre você para montar uma seleção de vinhos 
@@ -181,7 +186,9 @@ export default function SurveyPage() {
         <ul className="text-purple-700 space-y-2">
           <li>• 5 seções sobre perfil e preferências</li>
           <li>• Leva menos de 2 minutos para responder</li>
-          <li>• Recomendações personalizadas</li>
+          <li>• Você concorrerá a brindes exclusivos</li>
+          <li>• Ganhe até 10% de desconto em sua primeira compra</li>
+          <li>• Todos os dados são protegidos pela lei LGPD (Lei Geral de Proteção de Dados)</li>
         </ul>
       </motion.div>
     </motion.div>
