@@ -89,6 +89,18 @@ export default function SurveyPage() {
           if (cepValue.length !== 8) {
             missing.push(section.title + ' (deve ter 8 dígitos)')
           }
+        } else if (section.id === 'email') {
+          // Validação específica para email: deve ser um email válido
+          const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+          if (!emailRegex.test(value.toString().trim())) {
+            missing.push(section.title + ' (formato inválido)')
+          }
+        } else if (section.id === 'phone') {
+          // Validação específica para telefone: deve ter pelo menos 10 dígitos
+          const phoneValue = value.toString().replace(/\D/g, '')
+          if (phoneValue.length < 10) {
+            missing.push(section.title + ' (mínimo 10 dígitos)')
+          }
         }
       } else if (section.type === 'single') {
         if (!value || value.toString().trim().length === 0) {

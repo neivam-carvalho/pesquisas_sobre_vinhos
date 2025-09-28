@@ -4,6 +4,12 @@ import { motion } from 'framer-motion'
 import { ArrowRight, ArrowLeft, Check } from 'lucide-react'
 import { useState } from 'react'
 
+// Função utilitária para validar email
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  return emailRegex.test(email.trim())
+}
+
 interface ProgressBarProps {
   currentStep: number
   totalSteps: number
@@ -302,7 +308,7 @@ export const MultiSectionQuestion = ({
             {section.type === 'text' && (
               <>
                 <input
-                  type="text"
+                  type={section.id === 'email' ? 'email' : 'text'}
                   value={values[section.id] as string || ''}
                   onChange={(e) => {
                     const value = e.target.value;
@@ -311,13 +317,20 @@ export const MultiSectionQuestion = ({
                       // Permite apenas números e limita a 8 dígitos
                       const numericValue = value.replace(/\D/g, '').slice(0, 8);
                       onChange(section.id, numericValue);
+                    } else if (section.id === 'phone') {
+                      // Para telefone, permite apenas números, parênteses, espaços e hífen
+                      const phoneValue = value.replace(/[^\d\s\(\)\-]/g, '');
+                      onChange(section.id, phoneValue);
                     } else {
                       onChange(section.id, value);
                     }
                   }}
                   placeholder={section.placeholder}
                   className={`w-full p-3 border-2 rounded-lg focus:outline-none text-base transition-all ${
-                    section.id === 'cep' && values[section.id] && (values[section.id] as string).length !== 8
+                    // Estilo de erro para CEP
+                    (section.id === 'cep' && values[section.id] && (values[section.id] as string).length !== 8) ||
+                    // Estilo de erro para email
+                    (section.id === 'email' && values[section.id] && !isValidEmail(values[section.id] as string))
                       ? 'border-red-500 focus:border-red-600 bg-red-50'
                       : 'border-gray-300 focus:border-purple-500'
                   }`}
@@ -327,6 +340,12 @@ export const MultiSectionQuestion = ({
                   <p className="text-red-600 text-sm mt-1 flex items-center">
                     <span className="mr-1">⚠️</span>
                     CEP deve ter exatamente 8 dígitos numéricos
+                  </p>
+                )}
+                {section.id === 'email' && values[section.id] && (values[section.id] as string).length > 0 && !isValidEmail(values[section.id] as string) && (
+                  <p className="text-red-600 text-sm mt-1 flex items-center">
+                    <span className="mr-1">⚠️</span>
+                    Digite um e-mail válido (exemplo: nome@dominio.com)
                   </p>
                 )}
               </>
