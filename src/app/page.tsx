@@ -28,7 +28,7 @@ export default function SurveyPage() {
     // Consumption Habits
     frequency: '',
     wineStyle: [],
-    wineType: '',
+    wineType: [],
     classification: '',
     priceRange: '',
     alcoholFreeWine: '',
@@ -96,10 +96,10 @@ export default function SurveyPage() {
             missing.push(section.title + ' (formato inválido)')
           }
         } else if (section.id === 'phone') {
-          // Validação específica para telefone: deve ter pelo menos 10 dígitos
+          // Validação específica para telefone: deve ter exatamente 11 dígitos
           const phoneValue = value.toString().replace(/\D/g, '')
-          if (phoneValue.length < 10) {
-            missing.push(section.title + ' (mínimo 10 dígitos)')
+          if (phoneValue.length !== 11) {
+            missing.push(section.title + ' (deve ter 11 dígitos)')
           }
         }
       } else if (section.type === 'single') {

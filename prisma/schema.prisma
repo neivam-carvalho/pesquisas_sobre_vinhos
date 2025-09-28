@@ -27,7 +27,7 @@ model Survey {
   // Consumption Habits
   frequency         String?
   wineStyle         String[] @default([])
-  wineType          String?
+  wineType          String[] @default([])
   classification    String?
   priceRange        String?
   alcoholFreeWine   String?

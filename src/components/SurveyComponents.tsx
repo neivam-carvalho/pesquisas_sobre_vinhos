@@ -318,23 +318,23 @@ export const MultiSectionQuestion = ({
                       const numericValue = value.replace(/\D/g, '').slice(0, 8);
                       onChange(section.id, numericValue);
                     } else if (section.id === 'phone') {
-                      // Para telefone, permite apenas números, parênteses, espaços e hífen
-                      const phoneValue = value.replace(/[^\d\s\(\)\-]/g, '');
-                      onChange(section.id, phoneValue);
+                      // Para telefone, permite apenas números e limita a 11 dígitos
+                      const numericValue = value.replace(/\D/g, '').slice(0, 11);
+                      onChange(section.id, numericValue);
                     } else {
                       onChange(section.id, value);
                     }
                   }}
                   placeholder={section.placeholder}
-                  className={`w-full p-3 border-2 rounded-lg focus:outline-none text-base transition-all ${
+                  className={`w-full p-4 border-2 rounded-lg focus:outline-none text-lg font-medium transition-all ${
                     // Estilo de erro para CEP
                     (section.id === 'cep' && values[section.id] && (values[section.id] as string).length !== 8) ||
                     // Estilo de erro para email
                     (section.id === 'email' && values[section.id] && !isValidEmail(values[section.id] as string))
                       ? 'border-red-500 focus:border-red-600 bg-red-50'
-                      : 'border-gray-300 focus:border-purple-500'
+                      : 'border-gray-300 focus:border-purple-500 bg-white'
                   }`}
-                  maxLength={section.id === 'cep' ? 8 : undefined}
+                  maxLength={section.id === 'cep' ? 8 : section.id === 'phone' ? 11 : undefined}
                 />
                 {section.id === 'cep' && values[section.id] && (values[section.id] as string).length > 0 && (values[section.id] as string).length !== 8 && (
                   <p className="text-red-600 text-sm mt-1 flex items-center">

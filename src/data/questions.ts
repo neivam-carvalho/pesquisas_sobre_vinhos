@@ -75,7 +75,7 @@ export const surveyQuestions = [
       {
         id: 'wineType',
         title: 'Tipo mais consumido',
-        type: 'single',
+        type: 'multiple',
         options: ['Branco', 'Rosé', 'Tinto', 'Espumante']
       },
       {
@@ -135,7 +135,8 @@ export const surveyQuestions = [
           'Espanha',
           'França',
           'Portugal',
-          'Uruguai'
+          'Uruguai',
+          'Outros'
         ]
       },
       {

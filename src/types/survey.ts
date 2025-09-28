@@ -8,7 +8,7 @@ export interface SurveyData extends Record<string, string | string[]> {
   // Consumption Habits
   frequency: string
   wineStyle: string[]
-  wineType: string
+  wineType: string[]
   classification: string
   priceRange: string
   alcoholFreeWine: string

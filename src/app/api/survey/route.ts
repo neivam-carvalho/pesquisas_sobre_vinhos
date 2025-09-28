@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
         // Consumption Habits
         frequency: frequency || null,
         wineStyle: wineStyle || [],
-        wineType: wineType || null,
+        wineType: wineType || [],
         classification: classification || null,
         priceRange: priceRange || null,
         alcoholFreeWine: alcoholFreeWine || null,
@@ -93,7 +93,7 @@ export async function GET() {
       },
       where: {
         wineType: {
-          not: null,
+          isEmpty: false,
         },
       },
     })
@@ -103,10 +103,10 @@ export async function GET() {
       analytics: {
         total: totalSurveys,
         wineTypeStats: wineTypeStats.map((stat: { 
-          wineType: string | null; 
+          wineType: string[] | null; 
           _count: { wineType: number } 
         }) => ({
-          type: stat.wineType || 'Não informado',
+          type: stat.wineType ? stat.wineType.join(', ') : 'Não informado',
           count: stat._count.wineType,
         })),
       },
