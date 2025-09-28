@@ -23,7 +23,7 @@ export default function SurveyPage() {
     ageRange: '',
     gender: '',
     maritalStatus: '',
-    householdSize: '',
+    cep: '',
     
     // Consumption Habits
     frequency: '',

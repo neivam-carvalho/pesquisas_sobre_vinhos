@@ -22,7 +22,7 @@ model Survey {
   ageRange          String?
   gender            String?
   maritalStatus     String?
-  householdSize     String?
+  cep               String?
   
   // Consumption Habits
   frequency         String?

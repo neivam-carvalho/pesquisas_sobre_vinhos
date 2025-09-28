@@ -39,10 +39,11 @@ export const surveyQuestions = [
         ]
       },
       {
-        id: 'householdSize',
-        title: 'Quantas pessoas moram na sua casa?',
-        type: 'single',
-        options: ['1', '2', '3', '4', '5 ou mais']
+        id: 'cep',
+        title: 'Qual o CEP de onde você mora?',
+        subtitle: '(somente 8 dígitos numéricos)',
+        type: 'text',
+        placeholder: 'Ex: 12345678'
       }
     ],
     required: true

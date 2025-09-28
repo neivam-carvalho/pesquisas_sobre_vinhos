@@ -3,7 +3,7 @@ export interface SurveyData extends Record<string, string | string[]> {
   ageRange: string
   gender: string
   maritalStatus: string
-  householdSize: string
+  cep: string
   
   // Consumption Habits
   frequency: string

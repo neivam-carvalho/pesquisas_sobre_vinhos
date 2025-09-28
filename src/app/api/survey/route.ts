@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     
     const { 
-      ageRange, gender, maritalStatus, householdSize,
+      ageRange, gender, maritalStatus, cep,
       frequency, wineStyle, wineType, classification, priceRange, alcoholFreeWine,
       grapeVarieties, tryNewVarieties, preferredOrigins, purchaseChannels, attractiveFactors,
       wineEvents, cannedWines, naturalWines,
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
         ageRange: ageRange || null,
         gender: gender || null,
         maritalStatus: maritalStatus || null,
-        householdSize: householdSize || null,
+        cep: cep || null,
         
         // Consumption Habits
         frequency: frequency || null,
