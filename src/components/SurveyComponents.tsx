@@ -309,6 +309,8 @@ export const MultiSectionQuestion = ({
               <>
                 <input
                   type={section.id === 'email' ? 'email' : 'text'}
+                  inputMode={section.id === 'cep' ? 'numeric' : section.id === 'phone' ? 'tel' : 'text'}
+                  autoComplete={section.id === 'email' ? 'email' : section.id === 'phone' ? 'tel' : section.id === 'name' ? 'name' : 'off'}
                   value={values[section.id] as string || ''}
                   onChange={(e) => {
                     const value = e.target.value;
@@ -326,13 +328,13 @@ export const MultiSectionQuestion = ({
                     }
                   }}
                   placeholder={section.placeholder}
-                  className={`w-full p-4 border-2 rounded-lg focus:outline-none text-lg font-medium transition-all ${
+                  className={`w-full px-5 py-4 md:px-4 md:py-3 border-3 rounded-lg focus:outline-none text-xl md:text-lg font-semibold transition-all shadow-sm placeholder:text-gray-500 placeholder:font-medium ${
                     // Estilo de erro para CEP
                     (section.id === 'cep' && values[section.id] && (values[section.id] as string).length !== 8) ||
                     // Estilo de erro para email
                     (section.id === 'email' && values[section.id] && !isValidEmail(values[section.id] as string))
-                      ? 'border-red-500 focus:border-red-600 bg-red-50'
-                      : 'border-gray-300 focus:border-purple-500 bg-white'
+                      ? 'border-red-500 focus:border-red-600 bg-red-50 text-red-900'
+                      : 'border-gray-400 focus:border-purple-600 bg-white text-gray-900 focus:bg-purple-50 focus:shadow-lg'
                   }`}
                   maxLength={section.id === 'cep' ? 8 : section.id === 'phone' ? 11 : undefined}
                 />
