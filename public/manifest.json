@@ -1,0 +1,57 @@
+{
+  "name": "Pesquisa sobre Vinhos e Espumantes",
+  "short_name": "Pesquisa Vinhos",
+  "description": "Compartilhe suas preferências sobre vinhos e espumantes",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#722F37",
+  "theme_color": "#722F37",
+  "lang": "pt-BR",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["food", "lifestyle", "surveys"],
+  "screenshots": [
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Pesquisa sobre Vinhos - Desktop"
+    },
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "375x812",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Pesquisa sobre Vinhos - Mobile"
+    }
+  ]
+}

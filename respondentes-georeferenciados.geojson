@@ -1,0 +1,1921 @@
+{
+  "type": "FeatureCollection",
+  "name": "Respondentes_Pesquisa_Vinhos",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -43.445605568124854,
+          -22.76803742687348
+        ]
+      },
+      "properties": {
+        "id": "cmg464u2f0000l5042xdvb7zv",
+        "cep": "23423423",
+        "endereco": "Baixada Fluminense, Nova Iguaçu",
+        "cidade": "Nova Iguaçu",
+        "uf": "RJ",
+        "ageRange": "26 – 35 anos",
+        "gender": "Prefiro não informar",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Rosé;Tinto",
+        "coordinates": "-22.76803742687348,-43.445605568124854"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.069119408921416,
+          -22.91444104567194
+        ]
+      },
+      "properties": {
+        "id": "cmg4736lo0000l604x9zer5gf",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Feminino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto;Espumante;Rosé;Branco",
+        "coordinates": "-22.91444104567194,-47.069119408921416"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.05206530663849,
+          -22.913999698592963
+        ]
+      },
+      "properties": {
+        "id": "cmg48ks0h0000k104faphmeyb",
+        "cep": "13211890",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Rosé;Espumante;Tinto;Branco",
+        "coordinates": "-22.913999698592963,-47.05206530663849"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.657562193537004,
+          -23.623240426689964
+        ]
+      },
+      "properties": {
+        "id": "cmg5cnnj60000i904kcshjy54",
+        "cep": "04140000",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Raramente",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Branco;Rosé;Espumante",
+        "coordinates": "-23.623240426689964,-46.657562193537004"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.55387976082393,
+          -23.56665809598402
+        ]
+      },
+      "properties": {
+        "id": "cmg5cpnim0001i9048ar9nfo6",
+        "cep": "03125080",
+        "endereco": "Zona Leste, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto",
+        "coordinates": "-23.56665809598402,-46.55387976082393"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.66641296749853,
+          -23.607408535938195
+        ]
+      },
+      "properties": {
+        "id": "cmg5cq4hz0002i9048idz87xy",
+        "cep": "04180030",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Feminino",
+        "frequency": "Quinzenal",
+        "priceRange": "Até R$ 40",
+        "wineType": "Rosé",
+        "coordinates": "-23.607408535938195,-46.66641296749853"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.663427240463776,
+          -23.607937572627108
+        ]
+      },
+      "properties": {
+        "id": "cmg5cr4fk0003i904obqi742d",
+        "cep": "04750004",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-23.607937572627108,-46.663427240463776"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.73677299857958,
+          -23.545231599525003
+        ]
+      },
+      "properties": {
+        "id": "cmg5cwdty0004i904r8p0fo7k",
+        "cep": "05734150",
+        "endereco": "Zona Oeste, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Raramente",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-23.545231599525003,-46.73677299857958"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.72876399904965,
+          -23.548367654449528
+        ]
+      },
+      "properties": {
+        "id": "cmg5d3p470005i904iea9nxb9",
+        "cep": "05716120",
+        "endereco": "Zona Oeste, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "Acima de 60 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Branco",
+        "coordinates": "-23.548367654449528,-46.72876399904965"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.744377631805186,
+          -23.55143772202733
+        ]
+      },
+      "properties": {
+        "id": "cmg5d4epn0006i9048zlwngau",
+        "cep": "05717270",
+        "endereco": "Zona Oeste, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Feminino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto;Espumante",
+        "coordinates": "-23.55143772202733,-46.744377631805186"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.66350703190515,
+          -23.605858961520997
+        ]
+      },
+      "properties": {
+        "id": "cmg5d6rv20007i904iy4ivh3z",
+        "cep": "04125030",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Rosé",
+        "coordinates": "-23.605858961520997,-46.66350703190515"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.65899395526886,
+          -23.62343277345115
+        ]
+      },
+      "properties": {
+        "id": "cmg5d8g370008i904m7w2dnu6",
+        "cep": "04717000",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Mensal",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto;Rosé",
+        "coordinates": "-23.62343277345115,-46.65899395526886"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.66118472671891,
+          -23.624017522124184
+        ]
+      },
+      "properties": {
+        "id": "cmg5d8m8n0009i904kqla8254",
+        "cep": "04349000",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Tinto",
+        "coordinates": "-23.624017522124184,-46.66118472671891"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.051661877025616,
+          -22.912790777201444
+        ]
+      },
+      "properties": {
+        "id": "cmg5d8qf1000ai904lgyrummp",
+        "cep": "13201017",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto",
+        "coordinates": "-22.912790777201444,-47.051661877025616"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.64905570727415,
+          -23.61523282291059
+        ]
+      },
+      "properties": {
+        "id": "cmg5d9etp000bi9046q5b5dtb",
+        "cep": "04272000",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-23.61523282291059,-46.64905570727415"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.06762963243661,
+          -22.90568937084287
+        ]
+      },
+      "properties": {
+        "id": "cmg5d9o5t000ci904fbgpai1g",
+        "cep": "13201058",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-22.90568937084287,-47.06762963243661"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.66257910390431,
+          -23.62343923815946
+        ]
+      },
+      "properties": {
+        "id": "cmg5dibta0000kz04eo61n4hz",
+        "cep": "04104902",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Quinzenal",
+        "priceRange": "Até R$ 40",
+        "wineType": "Tinto",
+        "coordinates": "-23.62343923815946,-46.66257910390431"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.572015606825744,
+          -23.556331383313136
+        ]
+      },
+      "properties": {
+        "id": "cmg5dilds0001kz0434d8n9xq",
+        "cep": "03416000",
+        "endereco": "Zona Leste, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-23.556331383313136,-46.572015606825744"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.56993218164524,
+          -23.564557834445843
+        ]
+      },
+      "properties": {
+        "id": "cmg5dk3kj0002kz041ica81mr",
+        "cep": "03317080",
+        "endereco": "Zona Leste, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 101 – R$ 200",
+        "wineType": "Tinto",
+        "coordinates": "-23.564557834445843,-46.56993218164524"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.66495019202116,
+          -23.612426091505387
+        ]
+      },
+      "properties": {
+        "id": "cmg5dm9ao0003kz04nckxds0t",
+        "cep": "04272000",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 101 – R$ 200",
+        "wineType": "Tinto",
+        "coordinates": "-23.612426091505387,-46.66495019202116"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.73283739051223,
+          -23.55596177014808
+        ]
+      },
+      "properties": {
+        "id": "cmg5do9f30004kz04vixbcuib",
+        "cep": "05640001",
+        "endereco": "Zona Oeste, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Feminino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Branco;Rosé;Espumante",
+        "coordinates": "-23.55596177014808,-46.73283739051223"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.065309417680325,
+          -22.899490217602295
+        ]
+      },
+      "properties": {
+        "id": "cmg5dpbza0005kz04xm12ucse",
+        "cep": "13201807",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto",
+        "coordinates": "-22.899490217602295,-47.065309417680325"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.56899898344329,
+          -23.67284237212545
+        ]
+      },
+      "properties": {
+        "id": "cmg5dseyh0006kz04xy183nc1",
+        "cep": "09370600",
+        "endereco": "Grande ABC, Santo André",
+        "cidade": "Santo André",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Mensal",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-23.67284237212545,-46.56899898344329"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.65174796218388,
+          -23.606793258206938
+        ]
+      },
+      "properties": {
+        "id": "cmg5dside0007kz04mt1ra1q6",
+        "cep": "04268040",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 101 – R$ 200",
+        "wineType": "Tinto;Rosé;Branco",
+        "coordinates": "-23.606793258206938,-46.65174796218388"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.563004819470585,
+          -23.560296476939406
+        ]
+      },
+      "properties": {
+        "id": "cmg5e119v0000l504lwkukux3",
+        "cep": "03929010",
+        "endereco": "Zona Leste, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "26 – 35 anos",
+        "gender": "Masculino",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Rosé;Tinto;Branco;Espumante",
+        "coordinates": "-23.560296476939406,-46.563004819470585"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.64920650881272,
+          -23.611637755914156
+        ]
+      },
+      "properties": {
+        "id": "cmg5e21jb0001l504x4kn4xj5",
+        "cep": "04313210",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 101 – R$ 200",
+        "wineType": "Tinto",
+        "coordinates": "-23.611637755914156,-46.64920650881272"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.65545540811278,
+          -23.610189451296993
+        ]
+      },
+      "properties": {
+        "id": "cmg5e31tn0002l5049ws1ndvr",
+        "cep": "04140000",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 101 – R$ 200",
+        "wineType": "Tinto",
+        "coordinates": "-23.610189451296993,-46.65545540811278"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.73162975115095,
+          -23.548617873410887
+        ]
+      },
+      "properties": {
+        "id": "cmg5e4jyr0003l5046ye0e3ps",
+        "cep": "05302060",
+        "endereco": "Zona Oeste, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto",
+        "coordinates": "-23.548617873410887,-46.73162975115095"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.65692644383486,
+          -23.611029116698898
+        ]
+      },
+      "properties": {
+        "id": "cmg5e8t3w0004l504cn599gqt",
+        "cep": "04722070",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "Acima de 60 anos",
+        "gender": "Feminino",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto;Espumante",
+        "coordinates": "-23.611029116698898,-46.65692644383486"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.639571639521755,
+          -23.541269408251832
+        ]
+      },
+      "properties": {
+        "id": "cmg5e9h5m0005l504akgxzzuu",
+        "cep": "01546000",
+        "endereco": "Centro, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "Acima de R$ 200",
+        "wineType": "Tinto",
+        "coordinates": "-23.541269408251832,-46.639571639521755"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.557743493831424,
+          -23.67307163562492
+        ]
+      },
+      "properties": {
+        "id": "cmg5egeva0006l504kru5id3e",
+        "cep": "09540840",
+        "endereco": "Grande ABC, Santo André",
+        "cidade": "Santo André",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Raramente",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto;Espumante",
+        "coordinates": "-23.67307163562492,-46.557743493831424"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.052373764671536,
+          -22.909781832412683
+        ]
+      },
+      "properties": {
+        "id": "cmg5g1zxa0000jx04vemq51om",
+        "cep": "13202500",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-22.909781832412683,-47.052373764671536"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.07072664292194,
+          -22.908172612819953
+        ]
+      },
+      "properties": {
+        "id": "cmg5ga9j40000i904x7n0yb61",
+        "cep": "13201004",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Raramente",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Espumante",
+        "coordinates": "-22.908172612819953,-47.07072664292194"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.051981874018054,
+          -22.897185829962794
+        ]
+      },
+      "properties": {
+        "id": "cmg5gtwm90000l2042x0o9bta",
+        "cep": "13209120",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 101 – R$ 200",
+        "wineType": "Tinto",
+        "coordinates": "-22.897185829962794,-47.051981874018054"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.65017476228682,
+          -23.608624164026335
+        ]
+      },
+      "properties": {
+        "id": "cmg5gy9en0001l2048sck85gy",
+        "cep": "04020001",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 101 – R$ 200",
+        "wineType": "Tinto",
+        "coordinates": "-23.608624164026335,-46.65017476228682"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.653139463983344,
+          -23.614802777264213
+        ]
+      },
+      "properties": {
+        "id": "cmg5h0szj0002l20442186c6d",
+        "cep": "04127001",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-23.614802777264213,-46.653139463983344"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.658170724751336,
+          -23.60593122594386
+        ]
+      },
+      "properties": {
+        "id": "cmg5jm6sy0000jr04mqxj1v24",
+        "cep": "04018031",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Raramente",
+        "priceRange": "Até R$ 40",
+        "wineType": "Tinto",
+        "coordinates": "-23.60593122594386,-46.658170724751336"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.64824559306558,
+          -23.611975851484367
+        ]
+      },
+      "properties": {
+        "id": "cmg5lb1q90000i804dks6yfvm",
+        "cep": "04601000",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto",
+        "coordinates": "-23.611975851484367,-46.64824559306558"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.64949680512072,
+          -23.60796136517878
+        ]
+      },
+      "properties": {
+        "id": "cmg5mv3p80000k004i57m9bhq",
+        "cep": "04140000",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Rosé",
+        "coordinates": "-23.60796136517878,-46.64949680512072"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.64232583653887,
+          -23.549903977518138
+        ]
+      },
+      "properties": {
+        "id": "cmg5o3d5c0000jp040k4kyq97",
+        "cep": "01319030",
+        "endereco": "Centro, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "Acima de 60 anos",
+        "gender": "Masculino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto",
+        "coordinates": "-23.549903977518138,-46.64232583653887"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.07078734685477,
+          -22.90935720636858
+        ]
+      },
+      "properties": {
+        "id": "cmg5okwli0000lg04ugx7hhon",
+        "cep": "13216231",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "Até R$ 40",
+        "wineType": "Tinto",
+        "coordinates": "-22.90935720636858,-47.07078734685477"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.64615462370789,
+          -23.55659886178236
+        ]
+      },
+      "properties": {
+        "id": "cmg5rizov0000ju04bz5j71ks",
+        "cep": "01153020",
+        "endereco": "Centro, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Tinto",
+        "coordinates": "-23.55659886178236,-46.64615462370789"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.0533908933576,
+          -22.906927857192045
+        ]
+      },
+      "properties": {
+        "id": "cmg5s0o3v0000jr04q7f7wpni",
+        "cep": "13216040",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-22.906927857192045,-47.0533908933576"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.789872789105544,
+          -23.529190955257743
+        ]
+      },
+      "properties": {
+        "id": "cmg5tyt7z0000lb04gywm7oqr",
+        "cep": "06532025",
+        "endereco": "Centro, Osasco",
+        "cidade": "Osasco",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-23.529190955257743,-46.789872789105544"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.649853929922294,
+          -23.61369554194852
+        ]
+      },
+      "properties": {
+        "id": "cmg5vwqeu0000js04q2axcr3v",
+        "cep": "04131080",
+        "endereco": "Zona Sul, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-23.61369554194852,-46.649853929922294"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.565249073366736,
+          -23.553858772848944
+        ]
+      },
+      "properties": {
+        "id": "cmg5ykibn0000js04chdx4i32",
+        "cep": "03185020",
+        "endereco": "Zona Leste, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Raramente",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Branco;Espumante",
+        "coordinates": "-23.553858772848944,-46.565249073366736"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.56589788206844,
+          -23.563453508243406
+        ]
+      },
+      "properties": {
+        "id": "cmg6koiii0000la041ln0mavc",
+        "cep": "03351100",
+        "endereco": "Zona Leste, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Quinzenal",
+        "priceRange": "Até R$ 40",
+        "wineType": "Tinto",
+        "coordinates": "-23.563453508243406,-46.56589788206844"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.052951002392604,
+          -22.901796271071113
+        ]
+      },
+      "properties": {
+        "id": "cmg8bdm3u0000l204shtjvu6l",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Feminino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Branco;Rosé;Espumante",
+        "coordinates": "-22.901796271071113,-47.052951002392604"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.05461159833364,
+          -22.89794116860841
+        ]
+      },
+      "properties": {
+        "id": "cmg8mykwl0000l704ctamx09m",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Feminino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 101 – R$ 200",
+        "wineType": "Tinto",
+        "coordinates": "-22.89794116860841,-47.05461159833364"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.0627354193866,
+          -22.89702110168057
+        ]
+      },
+      "properties": {
+        "id": "cmg8mzg9b0001l70452a19qid",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "26 – 35 anos",
+        "gender": "Feminino",
+        "frequency": "Mensal",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto",
+        "coordinates": "-22.89702110168057,-47.0627354193866"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.0611269105344,
+          -22.899014239001243
+        ]
+      },
+      "properties": {
+        "id": "cmg8n2ymc0002l704kdbv3iis",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "Até R$ 40",
+        "wineType": "Tinto",
+        "coordinates": "-22.899014239001243,-47.0611269105344"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.068872561857276,
+          -22.910148185073503
+        ]
+      },
+      "properties": {
+        "id": "cmg8n42oj0003l704b6aaaqr8",
+        "cep": "13203261",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Rosé",
+        "coordinates": "-22.910148185073503,-47.068872561857276"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.05680307955482,
+          -22.90845837406253
+        ]
+      },
+      "properties": {
+        "id": "cmg8n4ulr0004l704qyu0n0ch",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Feminino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-22.90845837406253,-47.05680307955482"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.05144072260921,
+          -22.91174568746572
+        ]
+      },
+      "properties": {
+        "id": "cmg8n52pw0005l704la5kkhdm",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Tinto;Branco;Rosé",
+        "coordinates": "-22.91174568746572,-47.05144072260921"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.06805900100289,
+          -22.903520014001195
+        ]
+      },
+      "properties": {
+        "id": "cmg8n6bic0006l70457frz21d",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "26 – 35 anos",
+        "gender": "Feminino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Branco",
+        "coordinates": "-22.903520014001195,-47.06805900100289"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.05370681071281,
+          -22.900478777339785
+        ]
+      },
+      "properties": {
+        "id": "cmg8n71yu0007l704uzyc3d6j",
+        "cep": "13214710",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Rosé;Espumante;Tinto",
+        "coordinates": "-22.900478777339785,-47.05370681071281"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.0625267244491,
+          -22.89644855811304
+        ]
+      },
+      "properties": {
+        "id": "cmg8n859x0008l704hydugczx",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "Até R$ 40",
+        "wineType": "Tinto",
+        "coordinates": "-22.89644855811304,-47.0625267244491"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.056561580279244,
+          -22.899698228595245
+        ]
+      },
+      "properties": {
+        "id": "cmg8na2er0009l7048crl6lt9",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "Acima de 60 anos",
+        "gender": "Masculino",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Tinto;Espumante",
+        "coordinates": "-22.899698228595245,-47.056561580279244"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.06668343830329,
+          -22.903370116615566
+        ]
+      },
+      "properties": {
+        "id": "cmg8ncuru000al7047j15w572",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Mensal",
+        "priceRange": "Até R$ 40",
+        "wineType": "Tinto",
+        "coordinates": "-22.903370116615566,-47.06668343830329"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.05495246340457,
+          -22.907898224468877
+        ]
+      },
+      "properties": {
+        "id": "cmg8nes7f000bl704zte95co5",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Tinto;Branco",
+        "coordinates": "-22.907898224468877,-47.05495246340457"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.05633625313281,
+          -22.909216428431346
+        ]
+      },
+      "properties": {
+        "id": "cmg8nkh5z000cl704o1r7vger",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Mensal",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-22.909216428431346,-47.05633625313281"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.0516062295699,
+          -22.905319845252073
+        ]
+      },
+      "properties": {
+        "id": "cmg8nlriu000dl704iclsj38t",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto",
+        "coordinates": "-22.905319845252073,-47.0516062295699"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.057603152959445,
+          -22.904937880627653
+        ]
+      },
+      "properties": {
+        "id": "cmg8nnvtm000el70454pg9z6o",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Tinto",
+        "coordinates": "-22.904937880627653,-47.057603152959445"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.06315131302607,
+          -22.913154218174316
+        ]
+      },
+      "properties": {
+        "id": "cmg8ns13d000fl704t8lslbww",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "26 – 35 anos",
+        "gender": "Feminino",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-22.913154218174316,-47.06315131302607"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.05165442310537,
+          -22.90163204058458
+        ]
+      },
+      "properties": {
+        "id": "cmg8ntazh000gl704atqff9im",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Mensal",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto",
+        "coordinates": "-22.90163204058458,-47.05165442310537"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.06062264294129,
+          -22.90509425040151
+        ]
+      },
+      "properties": {
+        "id": "cmg8nvo9g000hl704fcnch4wz",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Feminino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Tinto",
+        "coordinates": "-22.90509425040151,-47.06062264294129"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.0658940754604,
+          -22.90865972728027
+        ]
+      },
+      "properties": {
+        "id": "cmg8o078a000il704jfirszuk",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "Acima de 60 anos",
+        "gender": "Masculino",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-22.90865972728027,-47.0658940754604"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.067082140361165,
+          -22.90969098582587
+        ]
+      },
+      "properties": {
+        "id": "cmg8ocolx0000ie04lkxxh3lx",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Branco",
+        "coordinates": "-22.90969098582587,-47.067082140361165"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.05678004022186,
+          -22.89977263583618
+        ]
+      },
+      "properties": {
+        "id": "cmg8oy5wa0000lg04ny5xpuec",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Tinto;Espumante",
+        "coordinates": "-22.89977263583618,-47.05678004022186"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.05206512611054,
+          -22.896028057877327
+        ]
+      },
+      "properties": {
+        "id": "cmg8qatz90000ju04uhjt20m3",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Rosé",
+        "coordinates": "-22.896028057877327,-47.05206512611054"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.070517183173536,
+          -22.913895166486885
+        ]
+      },
+      "properties": {
+        "id": "cmg8qidkg0000js04yat5otue",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-22.913895166486885,-47.070517183173536"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.07024327145263,
+          -22.897774930699185
+        ]
+      },
+      "properties": {
+        "id": "cmg8qiq3n0001js04hxq75aqn",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Feminino",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto",
+        "coordinates": "-22.897774930699185,-47.07024327145263"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.05170932418659,
+          -22.911102431741018
+        ]
+      },
+      "properties": {
+        "id": "cmg8qp4q30000jg04j9oxr9dm",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Tinto",
+        "coordinates": "-22.911102431741018,-47.05170932418659"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.06667531449202,
+          -22.900715829824577
+        ]
+      },
+      "properties": {
+        "id": "cmg8tmlc40000jw04wcjb3wum",
+        "cep": "13211661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Tinto",
+        "coordinates": "-22.900715829824577,-47.06667531449202"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.05080677360451,
+          -22.910999511599204
+        ]
+      },
+      "properties": {
+        "id": "cmg96yhm30000l804e2w1zk80",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto;Rosé",
+        "coordinates": "-22.910999511599204,-47.05080677360451"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.052931100687694,
+          -22.90455667485596
+        ]
+      },
+      "properties": {
+        "id": "cmg982jyg0000js04x97u9ijb",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Feminino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto",
+        "coordinates": "-22.90455667485596,-47.052931100687694"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.06971749473052,
+          -22.90629257945984
+        ]
+      },
+      "properties": {
+        "id": "cmg99idua0000i804p6zo7mik",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "36 – 45 anos",
+        "gender": "Masculino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Espumante",
+        "coordinates": "-22.90629257945984,-47.06971749473052"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.065375269340514,
+          -22.900914577212532
+        ]
+      },
+      "properties": {
+        "id": "cmg99sot20000l504tvemtjs2",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "26 – 35 anos",
+        "gender": "Feminino",
+        "frequency": "Raramente",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto;Branco",
+        "coordinates": "-22.900914577212532,-47.065375269340514"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.05261929633844,
+          -22.90788376242965
+        ]
+      },
+      "properties": {
+        "id": "cmg9atx5a0000ju04p7lic0bl",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "26 – 35 anos",
+        "gender": "Feminino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "Até R$ 40",
+        "wineType": "Tinto;Rosé",
+        "coordinates": "-22.90788376242965,-47.05261929633844"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.06766276891147,
+          -22.898744549449876
+        ]
+      },
+      "properties": {
+        "id": "cmg9x393v0000la046284vt2i",
+        "cep": "13214661",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Uma vez por semana",
+        "priceRange": "R$ 81 – R$ 100",
+        "wineType": "Tinto",
+        "coordinates": "-22.898744549449876,-47.06766276891147"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.070572552436786,
+          -22.910062257088544
+        ]
+      },
+      "properties": {
+        "id": "cmg9zh5h50000l2049wwxbqce",
+        "cep": "13253600",
+        "endereco": "Centro, Campinas",
+        "cidade": "Campinas",
+        "uf": "SP",
+        "ageRange": "26 – 35 anos",
+        "gender": "Masculino",
+        "frequency": "Duas vezes por semana",
+        "priceRange": "R$ 51 – R$ 80",
+        "wineType": "Espumante;Branco;Tinto",
+        "coordinates": "-22.910062257088544,-47.070572552436786"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.56848471730951,
+          -23.555586787996017
+        ]
+      },
+      "properties": {
+        "id": "cmgan3tks0000js04va2czi52",
+        "cep": "03309000",
+        "endereco": "Zona Leste, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Quinzenal",
+        "priceRange": "R$ 101 – R$ 200",
+        "wineType": "Branco",
+        "coordinates": "-23.555586787996017,-46.56848471730951"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.631912099802925,
+          -23.483762729022256
+        ]
+      },
+      "properties": {
+        "id": "cmgarjzuv0000gw04r66z3fjv",
+        "cep": "02246010",
+        "endereco": "Zona Norte, São Paulo",
+        "cidade": "São Paulo",
+        "uf": "SP",
+        "ageRange": "46 – 60 anos",
+        "gender": "Masculino",
+        "frequency": "Raramente",
+        "priceRange": "R$ 41 – R$ 50",
+        "wineType": "Tinto;Rosé",
+        "coordinates": "-23.483762729022256,-46.631912099802925"
+      }
+    }
+  ]
+}

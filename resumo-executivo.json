@@ -1,0 +1,94 @@
+{
+  "timestamp": "2025-10-02T00:49:09.157Z",
+  "totalResponses": 69,
+  "demographic": {
+    "primaryAgeGroup": "46 – 60 anos",
+    "genderDistribution": {
+      "Masculino": 42,
+      "Prefiro não informar": 1,
+      "Feminino": 26
+    },
+    "maritalStatus": {
+      "Solteiro(a)": 9,
+      "Casado(a)/em união estável": 52,
+      "Divorciado(a)": 7,
+      "Viúvo(a)": 1
+    }
+  },
+  "consumption": {
+    "frequencyProfile": {
+      "Quinzenal": 14,
+      "Duas vezes por semana": 21,
+      "Uma vez por semana": 22,
+      "Raramente": 6,
+      "Mensal": 6
+    },
+    "priceSegmentation": {
+      "R$ 51 – R$ 80": 25,
+      "R$ 81 – R$ 100": 14,
+      "R$ 41 – R$ 50": 13,
+      "R$ 101 – R$ 200": 8,
+      "Até R$ 40": 8,
+      "Acima de R$ 200": 1
+    },
+    "winePreferences": {
+      "Rosé": 15,
+      "Tinto": 57,
+      "Espumante": 14,
+      "Branco": 13
+    }
+  },
+  "geographic": {
+    "stateDistribution": {
+      "São Paulo": 67,
+      "Rio de Janeiro": 1,
+      "Outros": 1
+    },
+    "mainRegions": [
+      {
+        "region": "São Paulo - Campinas",
+        "count": 32,
+        "percentage": 46
+      },
+      {
+        "region": "São Paulo - Zona Sul",
+        "count": 19,
+        "percentage": 28
+      },
+      {
+        "region": "São Paulo - Zona Leste",
+        "count": 6,
+        "percentage": 9
+      },
+      {
+        "region": "São Paulo - Zona Oeste",
+        "count": 5,
+        "percentage": 7
+      },
+      {
+        "region": "São Paulo - Outras",
+        "count": 5,
+        "percentage": 7
+      }
+    ]
+  },
+  "opportunities": {
+    "premiumSegment": 13,
+    "frequentConsumers": 62,
+    "geographicExpansion": [
+      "Rio de Janeiro",
+      "Minas Gerais",
+      "Santa Catarina"
+    ],
+    "communicationChannels": {
+      "Não, obrigado(a)": 13,
+      "Sim, prefiro por e-mail": 24,
+      "Sim, pode me chamar no WhatsApp": 32
+    }
+  },
+  "recommendations": [
+    "Implementar programa de fidelidade para consumidores frequentes",
+    "Expandir operação para Rio de Janeiro e Minas Gerais",
+    "Ampliar portfólio de tintos, especialmente argentinos e chilenos"
+  ]
+}

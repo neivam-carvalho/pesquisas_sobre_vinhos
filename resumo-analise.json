@@ -1,0 +1,34 @@
+{
+  "totalRespostas": 69,
+  "dataAnalise": "01/10/2025",
+  "demografico": {
+    "genero": {
+      "Prefiro não informar": 1,
+      "Feminino": 26,
+      "Masculino": 42
+    },
+    "idade": {
+      "26 – 35 anos": 5,
+      "46 – 60 anos": 30,
+      "36 – 45 anos": 29,
+      "Acima de 60 anos": 5
+    }
+  },
+  "consumo": {
+    "frequencia": {
+      "Quinzenal": 14,
+      "Duas vezes por semana": 21,
+      "Uma vez por semana": 22,
+      "Raramente": 6,
+      "Mensal": 6
+    },
+    "faixaPreco": {
+      "R$ 41 – R$ 50": 13,
+      "R$ 81 – R$ 100": 14,
+      "R$ 51 – R$ 80": 25,
+      "Até R$ 40": 8,
+      "R$ 101 – R$ 200": 8,
+      "Acima de R$ 200": 1
+    }
+  }
+}

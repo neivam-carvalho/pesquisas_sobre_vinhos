@@ -1,0 +1,2995 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍷 Mapa de Respondentes - Pesquisa sobre Vinhos</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #722F37, #8B4513);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/><circle cx="80" cy="40" r="1.5" fill="white" opacity="0.1"/><circle cx="40" cy="80" r="1" fill="white" opacity="0.1"/></svg>');
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.8em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        .header p {
+            margin: 15px 0 0 0;
+            font-size: 1.3em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        .stats-container {
+            background: white;
+            margin: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .stats-bar {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        .stat-item:hover {
+            transform: translateY(-2px);
+        }
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #722F37;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 1em;
+            font-weight: 500;
+        }
+        .map-container {
+            position: relative;
+            height: 70vh;
+            margin: 0;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.1);
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        .footer {
+            background: linear-gradient(135deg, #722F37, #8B4513);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 0;
+        }
+        .footer p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+        .leaflet-popup-content {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+        }
+        .custom-marker {
+            border-radius: 50% !important;
+            border: 3px solid white !important;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3) !important;
+            transition: transform 0.2s ease;
+        }
+        .custom-marker:hover {
+            transform: scale(1.1);
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .header p { font-size: 1.1em; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; }
+            .map-container { height: 60vh; }
+            .stat-item { padding: 15px; }
+            .stat-number { font-size: 2em; }
+        }
+        @media (max-width: 480px) {
+            .stats-bar { grid-template-columns: 1fr; }
+            .header { padding: 20px 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🍷 Mapa de Respondentes</h1>
+        <p>Pesquisa sobre Vinhos e Espumantes - Distribuição Geográfica Interativa</p>
+    </div>
+    
+    <div class="stats-container">
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">83</span>
+                <span class="stat-label">Respondentes Localizados</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">5</span>
+                <span class="stat-label">Cidades Diferentes</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">10</span>
+                <span class="stat-label">Consumidores Premium</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">51</span>
+                <span class="stat-label">Consumidores Frequentes</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="map-container">
+        <div id="map"></div>
+    </div>
+
+    <div class="footer">
+        <p>📍 <strong>Mapa gerado em 3 de outubro de 2025</strong></p>
+        <p>🎯 83 respondentes mapeados com coordenadas aproximadas por região</p>
+        <p>🍷 Pesquisa sobre Vinhos e Espumantes - Sistema de Georeferenciamento Local</p>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Inicializar mapa com visual aprimorado
+        const map = L.map('map', {
+            zoomControl: true,
+            attributionControl: true
+        }).setView([-23.5505, -46.6333], 6);
+
+        // Adicionar camada de tiles com melhor visual
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 18,
+            tileSize: 256,
+            zoomOffset: 0
+        }).addTo(map);
+
+        // Dados dos respondentes
+        const respondentes = [
+    {
+      lat: -22.76803742687348,
+      lng: -43.445605568124854,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Nova Iguaçu, RJ
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 23423423</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Baixada Fluminense, Nova Iguaçu</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 26 – 35 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Prefiro não informar</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Rosé, Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 1 respondente</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 0 (0.0%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 0 (0.0%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 0M / 0F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.91444104567194,
+      lng: -47.069119408921416,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto, Espumante, Rosé, Branco</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.913999698592963,
+      lng: -47.05206530663849,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13211890</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Rosé, Espumante, Tinto, Branco</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.623240426689964,
+      lng: -46.657562193537004,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04140000</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Raramente</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Branco, Rosé, Espumante</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.56665809598402,
+      lng: -46.55387976082393,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 03125080</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Leste, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.607408535938195,
+      lng: -46.66641296749853,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04180030</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> Até R$ 40</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Rosé</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.607937572627108,
+      lng: -46.663427240463776,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04750004</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.545231599525003,
+      lng: -46.73677299857958,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 05734150</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Oeste, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Raramente</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.548367654449528,
+      lng: -46.72876399904965,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 05716120</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Oeste, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> Acima de 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Branco</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.55143772202733,
+      lng: -46.744377631805186,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 05717270</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Oeste, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto, Espumante</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.605858961520997,
+      lng: -46.66350703190515,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04125030</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Rosé</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.62343277345115,
+      lng: -46.65899395526886,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04717000</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Mensal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto, Rosé</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.624017522124184,
+      lng: -46.66118472671891,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04349000</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.912790777201444,
+      lng: -47.051661877025616,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13201017</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.61523282291059,
+      lng: -46.64905570727415,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04272000</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.90568937084287,
+      lng: -47.06762963243661,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13201058</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.62343923815946,
+      lng: -46.66257910390431,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04104902</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> Até R$ 40</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.556331383313136,
+      lng: -46.572015606825744,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 03416000</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Leste, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.564557834445843,
+      lng: -46.56993218164524,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 03317080</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Leste, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 101 – R$ 200</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.612426091505387,
+      lng: -46.66495019202116,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04272000</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 101 – R$ 200</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.55596177014808,
+      lng: -46.73283739051223,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 05640001</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Oeste, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Branco, Rosé, Espumante</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.899490217602295,
+      lng: -47.065309417680325,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13201807</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.67284237212545,
+      lng: -46.56899898344329,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Santo André, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 09370600</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Grande ABC, Santo André</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Mensal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 2 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 0 (0.0%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 0 (0.0%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 1M / 1F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.606793258206938,
+      lng: -46.65174796218388,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04268040</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 101 – R$ 200</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto, Rosé, Branco</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.560296476939406,
+      lng: -46.563004819470585,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 03929010</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Leste, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 26 – 35 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Rosé, Tinto, Branco, Espumante</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.611637755914156,
+      lng: -46.64920650881272,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04313210</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 101 – R$ 200</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.610189451296993,
+      lng: -46.65545540811278,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04140000</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 101 – R$ 200</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.548617873410887,
+      lng: -46.73162975115095,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 05302060</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Oeste, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.611029116698898,
+      lng: -46.65692644383486,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04722070</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> Acima de 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto, Espumante</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.541269408251832,
+      lng: -46.639571639521755,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 01546000</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> Acima de R$ 200</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.67307163562492,
+      lng: -46.557743493831424,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Santo André, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 09540840</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Grande ABC, Santo André</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Raramente</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto, Espumante</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 2 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 0 (0.0%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 0 (0.0%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 1M / 1F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.909781832412683,
+      lng: -47.052373764671536,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13202500</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.908172612819953,
+      lng: -47.07072664292194,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13201004</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Raramente</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Espumante</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.897185829962794,
+      lng: -47.051981874018054,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13209120</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 101 – R$ 200</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.608624164026335,
+      lng: -46.65017476228682,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04020001</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 101 – R$ 200</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.614802777264213,
+      lng: -46.653139463983344,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04127001</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.60593122594386,
+      lng: -46.658170724751336,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04018031</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Raramente</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> Até R$ 40</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.611975851484367,
+      lng: -46.64824559306558,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04601000</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.60796136517878,
+      lng: -46.64949680512072,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04140000</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Rosé</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.549903977518138,
+      lng: -46.64232583653887,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 01319030</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> Acima de 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.90935720636858,
+      lng: -47.07078734685477,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13216231</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> Até R$ 40</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.55659886178236,
+      lng: -46.64615462370789,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 01153020</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.906927857192045,
+      lng: -47.0533908933576,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13216040</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.529190955257743,
+      lng: -46.789872789105544,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Osasco, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 06532025</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Osasco</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 1 respondente</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 0 (0.0%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 1 (100.0%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 1M / 0F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.61369554194852,
+      lng: -46.649853929922294,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 04131080</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Sul, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.553858772848944,
+      lng: -46.565249073366736,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 03185020</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Leste, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Raramente</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Branco, Espumante</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.563453508243406,
+      lng: -46.56589788206844,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 03351100</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Leste, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> Até R$ 40</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.901796271071113,
+      lng: -47.052951002392604,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Branco, Rosé, Espumante</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.89794116860841,
+      lng: -47.05461159833364,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 101 – R$ 200</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.89702110168057,
+      lng: -47.0627354193866,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 26 – 35 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Mensal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.899014239001243,
+      lng: -47.0611269105344,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> Até R$ 40</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.910148185073503,
+      lng: -47.068872561857276,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13203261</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Rosé</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.90845837406253,
+      lng: -47.05680307955482,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.91174568746572,
+      lng: -47.05144072260921,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto, Branco, Rosé</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.903520014001195,
+      lng: -47.06805900100289,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 26 – 35 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Branco</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.900478777339785,
+      lng: -47.05370681071281,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214710</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Rosé, Espumante, Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.89644855811304,
+      lng: -47.0625267244491,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> Até R$ 40</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.899698228595245,
+      lng: -47.056561580279244,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> Acima de 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto, Espumante</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.903370116615566,
+      lng: -47.06668343830329,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Mensal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> Até R$ 40</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.907898224468877,
+      lng: -47.05495246340457,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto, Branco</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.909216428431346,
+      lng: -47.05633625313281,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Mensal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.905319845252073,
+      lng: -47.0516062295699,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.904937880627653,
+      lng: -47.057603152959445,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.913154218174316,
+      lng: -47.06315131302607,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 26 – 35 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.90163204058458,
+      lng: -47.05165442310537,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Mensal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.90509425040151,
+      lng: -47.06062264294129,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.90865972728027,
+      lng: -47.0658940754604,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> Acima de 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.90969098582587,
+      lng: -47.067082140361165,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Branco</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.89977263583618,
+      lng: -47.05678004022186,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto, Espumante</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.896028057877327,
+      lng: -47.05206512611054,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Rosé</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.913895166486885,
+      lng: -47.070517183173536,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.897774930699185,
+      lng: -47.07024327145263,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.911102431741018,
+      lng: -47.05170932418659,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.900715829824577,
+      lng: -47.06667531449202,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13211661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.910999511599204,
+      lng: -47.05080677360451,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto, Rosé</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.90455667485596,
+      lng: -47.052931100687694,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.90629257945984,
+      lng: -47.06971749473052,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 36 – 45 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Espumante</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.900914577212532,
+      lng: -47.065375269340514,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 26 – 35 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Raramente</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto, Branco</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.90788376242965,
+      lng: -47.05261929633844,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 26 – 35 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Feminino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> Até R$ 40</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto, Rosé</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.898744549449876,
+      lng: -47.06766276891147,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13214661</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Uma vez por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 81 – R$ 100</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -22.910062257088544,
+      lng: -47.070572552436786,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 Campinas, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 13253600</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Centro, Campinas</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 26 – 35 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Duas vezes por semana</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 51 – R$ 80</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Espumante, Branco, Tinto</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 44 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 2 (4.5%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 30 (68.2%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 20M / 24F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.555586787996017,
+      lng: -46.56848471730951,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 03309000</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Leste, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Quinzenal</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 101 – R$ 200</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Branco</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      lat: -23.483762729022256,
+      lng: -46.631912099802925,
+      popup: `
+        <div style="min-width: 280px; font-family: 'Segoe UI', sans-serif;">
+          <h3 style="margin: 0 0 12px 0; color: #722F37; border-bottom: 2px solid #722F37; padding-bottom: 8px;">
+            📍 São Paulo, SP
+          </h3>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+            <p style="margin: 4px 0;"><strong>CEP:</strong> 02246010</p>
+            <p style="margin: 4px 0;"><strong>Região:</strong> Zona Norte, São Paulo</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">👤 Perfil do Respondente</h4>
+          <div style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Idade:</strong> 46 – 60 anos</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> Masculino</p>
+            <p style="margin: 3px 0;"><strong>Frequência:</strong> Raramente</p>
+            <p style="margin: 3px 0;"><strong>Faixa de preço:</strong> R$ 41 – R$ 50</p>
+            <p style="margin: 3px 0;"><strong>Tipos preferidos:</strong> Tinto, Rosé</p>
+          </div>
+          
+          <h4 style="margin: 8px 0 6px 0; color: #722F37; font-size: 14px;">📊 Estatísticas da Região</h4>
+          <div style="background: #d1ecf1; padding: 8px; border-radius: 4px; font-size: 13px;">
+            <p style="margin: 3px 0;"><strong>Total na região:</strong> 35 respondentes</p>
+            <p style="margin: 3px 0;"><strong>Consumidores premium:</strong> 8 (22.9%)</p>
+            <p style="margin: 3px 0;"><strong>Consumidores frequentes:</strong> 20 (57.1%)</p>
+            <p style="margin: 3px 0;"><strong>Gênero:</strong> 28M / 7F</p>
+          </div>
+        </div>
+      `
+    }];
+
+        // Criar clusters por cidade para melhor visualização
+        const cidadesClusters = {};
+        respondentes.forEach(r => {
+            const chave = Math.round(r.lat * 100) + ',' + Math.round(r.lng * 100);
+            if (!cidadesClusters[chave]) {
+                cidadesClusters[chave] = [];
+            }
+            cidadesClusters[chave].push(r);
+        });
+
+        // Cores por quantidade de respondentes
+        function obterCorMarcador(quantidade) {
+            if (quantidade >= 20) return '#8B0000';
+            if (quantidade >= 10) return '#A0522D';
+            if (quantidade >= 5) return '#CD853F';
+            if (quantidade >= 3) return '#D2691E';
+            return '#722F37';
+        }
+
+        // Adicionar marcadores com animação
+        Object.values(cidadesClusters).forEach((cluster, index) => {
+            setTimeout(() => {
+                const ponto = cluster[0];
+                const quantidade = cluster.length;
+                const cor = obterCorMarcador(quantidade);
+                const tamanho = Math.min(50, 25 + quantidade * 2);
+                
+                // Criar ícone personalizado com gradiente
+                const icone = L.divIcon({
+                    html: `<div style="
+                        background: linear-gradient(145deg, ${cor}, #333);
+                        color: white;
+                        border-radius: 50%;
+                        width: ${tamanho}px;
+                        height: ${tamanho}px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
+                        border: 4px solid white;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                        font-size: ${quantidade >= 10 ? '16' : '14'}px;
+                        transition: all 0.3s ease;
+                        cursor: pointer;
+                    " onmouseover="this.style.transform='scale(1.1)'" 
+                       onmouseout="this.style.transform='scale(1)'">${quantidade}</div>`,
+                    className: 'custom-marker',
+                    iconSize: [tamanho, tamanho],
+                    iconAnchor: [tamanho/2, tamanho/2]
+                });
+
+                // Adicionar marcador ao mapa com evento de clique
+                const marker = L.marker([ponto.lat, ponto.lng], { icon: icone })
+                    .addTo(map)
+                    .bindPopup(ponto.popup, {
+                        maxWidth: 350,
+                        className: 'custom-popup',
+                        closeButton: true,
+                        autoPan: true,
+                        keepInView: true
+                    });
+
+                // Adicionar efeito de bounce ao clicar
+                marker.on('click', function() {
+                    this.setIcon(L.divIcon({
+                        html: `<div style="
+                            background: linear-gradient(145deg, ${cor}, #333);
+                            color: white;
+                            border-radius: 50%;
+                            width: ${tamanho}px;
+                            height: ${tamanho}px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-weight: bold;
+                            border: 4px solid white;
+                            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+                            font-size: ${quantidade >= 10 ? '16' : '14'}px;
+                            animation: bounce 0.6s ease-in-out;
+                        ">${quantidade}</div>
+                        <style>
+                        @keyframes bounce {
+                            0%, 100% { transform: scale(1); }
+                            50% { transform: scale(1.2); }
+                        }
+                        </style>`,
+                        className: 'custom-marker',
+                        iconSize: [tamanho, tamanho],
+                        iconAnchor: [tamanho/2, tamanho/2]
+                    }));
+                });
+                
+            }, index * 100); // Animação escalonada
+        });
+
+        // Ajustar visualização para mostrar todos os pontos
+        if (respondentes.length > 0) {
+            const grupo = new L.featureGroup(
+                Object.values(cidadesClusters).map(cluster => 
+                    L.marker([cluster[0].lat, cluster[0].lng])
+                )
+            );
+            map.fitBounds(grupo.getBounds().pad(0.1));
+        }
+
+        // Adicionar controles personalizados
+        L.control.scale({
+            position: 'bottomleft',
+            metric: true,
+            imperial: false
+        }).addTo(map);
+
+        // Adicionar informações no canto superior direito
+        const info = L.control({position: 'topright'});
+        info.onAdd = function() {
+            const div = L.DomUtil.create('div', 'info-box');
+            div.style.cssText = `
+                background: rgba(255,255,255,0.95);
+                padding: 12px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                font-size: 13px;
+                line-height: 1.4;
+                max-width: 200px;
+            `;
+            div.innerHTML = `
+                <h4 style="margin: 0 0 8px 0; color: #722F37;">📊 Legenda</h4>
+                <p style="margin: 4px 0;"><strong>Círculos:</strong> Quantidade de respondentes</p>
+                <p style="margin: 4px 0;"><strong>Cores:</strong></p>
+                <div style="margin: 4px 0;">
+                    <span style="display: inline-block; width: 12px; height: 12px; background: #8B0000; border-radius: 50%; margin-right: 6px;"></span>20+ respondentes
+                </div>
+                <div style="margin: 4px 0;">
+                    <span style="display: inline-block; width: 12px; height: 12px; background: #A0522D; border-radius: 50%; margin-right: 6px;"></span>10-19 respondentes
+                </div>
+                <div style="margin: 4px 0;">
+                    <span style="display: inline-block; width: 12px; height: 12px; background: #722F37; border-radius: 50%; margin-right: 6px;"></span>1-9 respondentes
+                </div>
+                <p style="margin: 8px 0 4px 0; font-size: 12px; color: #666;">Clique nos círculos para ver detalhes</p>
+            `;
+            return div;
+        };
+        info.addTo(map);
+
+        // Log para debug
+        console.log('🗺️ Mapa carregado com', respondentes.length, 'respondentes');
+        console.log('📍 Cidades mapeadas:', Object.keys(cidadesClusters).length);
+    </script>
+</body>
+</html>

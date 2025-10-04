@@ -5,13 +5,10 @@ Uma aplicação web moderna para coleta de dados sobre preferências de vinhos, 
 ## 🍷 Características
 
 - **Interface Moderna**: Design inspirado no Typeform com animações suaves
-- **3 Tipos de Perguntas**: 
-  - Pergunta aberta (textarea)
-  - Seleção única (radio buttons)
-  - Múltipla escolha (checkboxes)
+- **5 Seções Completas**: Demografia, Consumo, Preferências, Novidades, Contato
 - **Base de dados**: PostgreSQL hospedado no Railway
 - **Deploy**: Vercel
-- **Análise de Dados**: Dashboard com estatísticas das respostas
+- **Sistema de Análise**: Scripts completos para análise dos dados coletados
 
 ## 🚀 Tecnologias
 
@@ -96,7 +93,43 @@ npx prisma generate
 npm run dev
 ```
 
-## 🗄️ Base de Dados
+## � Análise de Dados
+
+O projeto inclui um sistema completo de análise dos dados coletados:
+
+### Scripts Disponíveis
+```bash
+# Análise básica dos dados
+npm run analise
+
+# Relatório avançado com segmentação
+npm run relatorio
+
+# Análise geográfica por região
+npm run geografia
+
+# Resumo executivo consolidado
+npm run executivo
+
+# Mapa interativo com georeferenciamento
+npm run mapa-offline
+
+# Executar todas as análises
+npm run analise-completa
+```
+
+### Arquivos Gerados
+- `relatorio-vinhos.csv` - Dados estruturados para Excel/BI
+- `resumo-analise.json` - Dados completos em JSON
+- `resumo-executivo.json` - Dashboard executivo
+- `relatorio-final.txt` - Resumo para tomada de decisão
+- `mapa-respondentes.html` - **Mapa interativo com localização dos respondentes**
+- `respondentes-georeferenciados.geojson` - Dados geográficos para GIS
+
+📖 **Para documentação completa das análises, consulte [ANALISE.md](./ANALISE.md)**  
+🗺️ **Para georeferenciamento e mapas, consulte [GEOREFERENCIAMENTO.md](./GEOREFERENCIAMENTO.md)**
+
+## �🗄️ Base de Dados
 
 ### Schema Prisma
 
